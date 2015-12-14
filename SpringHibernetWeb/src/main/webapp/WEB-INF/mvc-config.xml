@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans 	xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:mvc="http://www.springframework.org/schema/mvc" 
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<mvc:annotation-driven />
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<context:component-scan base-package="org.qrbarcode" />
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	        <!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
+	        <property name="prefix" value="/WEB-INF/view/"/>
+	        <property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+	    <property name="url" value="jdbc:sqlserver://192.168.110.19:1443/Dee_development"/>
+	    <property name="username" value="sa"/>
+	    <property name="password" value="Oct@2015"/>
+	</bean>
+	
+	<bean id="dataSourceNav" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+	    <property name="url" value="jdbc:sqlserver://192.168.0.216:1443/DEETest"/>
+	    <property name="username" value="brc"/>
+	    <property name="password" value="Barcode"/>
+	</bean>
+	
+	<bean id="primarySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	    <property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="org.qrbarcode.model" />
+	</bean>
+	
+	<bean id="secondarySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	    <property name="dataSourceNav" ref="dataSourceNav" />
+		<property name="packagesToScan" value="org.qrbarcode.modelnav" />
+	</bean>
+
+	<tx:annotation-driven />
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	    <property name="sessionFactory" ref="primarySessionFactory" />
+	</bean>
+
+</beans>
