@@ -1,14 +1,15 @@
 package org.qrbarcode.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.qrbarcode.model.POBarcode;
 
 public abstract interface POBarcodeDAO
   extends GenericDAO<POBarcode, Integer>
 {
-  public abstract void addPOBarcode(POBarcode paramObjPerson);
+  public abstract void addPOBarcode(POBarcode paramObjPOBarcode);
   
-  public abstract void updatePOBarcode(POBarcode paramObjPerson);
+  public abstract void updatePOBarcode(POBarcode paramObjPOBarcode);
   
   public abstract List<POBarcode> listPOBarcodes();
   
@@ -17,4 +18,6 @@ public abstract interface POBarcodeDAO
   public abstract void removePOBarcode(int paramIntId);
   
   public abstract POBarcode getPOBarcodeByBarcode(String paramStringBarcode);
+  
+  public abstract BigDecimal getSumOfPOBarcodeLengthByDocNo(int paramIntDocNo);
 }

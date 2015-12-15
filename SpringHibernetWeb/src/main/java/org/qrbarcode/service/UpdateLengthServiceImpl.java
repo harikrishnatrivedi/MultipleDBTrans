@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class UpdateLengthServiceImpl
-  implements PersonService
+  implements UpdateLengthService
 {
   @Autowired
   private PersonDAO personDAO;

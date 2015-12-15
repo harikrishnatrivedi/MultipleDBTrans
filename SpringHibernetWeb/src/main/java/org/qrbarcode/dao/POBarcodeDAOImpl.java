@@ -1,6 +1,7 @@
 package org.qrbarcode.dao;
 
 import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -15,14 +16,14 @@ public class POBarcodeDAOImpl
   extends GenericDAOImpl<POBarcode, Integer>
   implements POBarcodeDAO
 {
-  public void addPOBarcode(POBarcode p)
+  public void addPOBarcode(POBarcode paramObjPOBarcode)
   {
-    currentSession2().persist(p);
+    currentSession().persist(paramObjPOBarcode);
   }
   
-  public void updatePOBarcode(POBarcode p)
+  public void updatePOBarcode(POBarcode paramObjPOBarcode)
   {
-    currentSession().update(p);
+    currentSession().update(paramObjPOBarcode);
   }
   
   public List<POBarcode> listPOBarcodes()
@@ -53,9 +54,15 @@ public class POBarcodeDAOImpl
   
   public POBarcode getPOBarcodeByBarcode(String paramStringBarcode)
   {
-	 Query query = currentSession().createQuery("from po_barcode where barCode = :paramStringBarcode");
-	 query.setParameter("paramStringBarcode", paramStringBarcode);
+	 Query query = currentSession().createQuery("from po_barcode where barCode = :barCode");
+	 query.setParameter("barCode", paramStringBarcode);
 	 return (POBarcode)query.list().get(0);
+  }
+
+  public BigDecimal getSumOfPOBarcodeLengthByDocNo(int paramIntDocNo) {
+	  Query query = currentSession().createQuery("from po_barcode where docNo = :docNo");
+	  query.setParameter("docNo", paramIntDocNo);
+	  return new BigDecimal(0);
   }
   
 }

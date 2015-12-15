@@ -3,7 +3,7 @@ package org.qrbarcode.controller;
 import java.util.List;
 
 import org.qrbarcode.model.Person;
-import org.qrbarcode.model.User;
+import org.qrbarcode.model.UpdateLength;
 import org.qrbarcode.service.PersonService;
 import org.qrbarcode.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
