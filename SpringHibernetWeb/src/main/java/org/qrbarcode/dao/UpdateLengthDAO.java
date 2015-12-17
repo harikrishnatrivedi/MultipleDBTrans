@@ -8,9 +8,9 @@ public abstract interface UpdateLengthDAO
 {
   public abstract void updateLength(UpdateLength objUpdateLength) throws Exception;
   
-  public abstract boolean checkMRN(String strBarcode);
+  /*public abstract boolean checkMRN(String strBarcode);
   
-  /*public abstract void updatePerson(UpdateLength paramPerson);
+  public abstract void updatePerson(UpdateLength paramPerson);
   
   public abstract List<Person> listPersons();
   

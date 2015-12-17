@@ -13,9 +13,11 @@ public class GenericDAOImpl<E, PK extends Serializable>
   implements GenericDAO<E, PK>
 {
   private final Class<? extends E> persistentClass;
+  
   @Autowired
   @Qualifier("primarySessionFactory")
   private SessionFactory sessionFactory;
+  
   @Autowired
   @Qualifier("secondarySessionFactory")
   private SessionFactory sessionFactorySecond;

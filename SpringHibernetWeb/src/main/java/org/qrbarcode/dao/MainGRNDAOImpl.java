@@ -58,7 +58,7 @@ public class MainGRNDAOImpl
   }
 
   public MainGRN getMainGRNByDocNo(int paramIntDocNo) {
-	  Query query = currentSession().createQuery("from Main_Grn where Docno = :docNo");
+	  Query query = currentSession().createQuery("from MainGRN where Docno = :docNo");
 	  query.setParameter("docNo", paramIntDocNo);
 	  return (MainGRN) query.list().get(0);  
   }

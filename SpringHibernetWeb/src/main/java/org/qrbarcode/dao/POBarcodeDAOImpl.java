@@ -29,7 +29,7 @@ public class POBarcodeDAOImpl
   public List<POBarcode> listPOBarcodes()
   {
     System.out.println("currentSession() : " + currentSession());
-    List<POBarcode> pOBarcodesList = currentSession().createQuery("from Po_barcode").list();
+    List<POBarcode> pOBarcodesList = currentSession().createQuery("from POBarcode where status = :status").setParameter("status", "O").list();
     for (POBarcode p : pOBarcodesList) {
       System.out.println("POBarcode List::" + p);
     }
@@ -54,15 +54,23 @@ public class POBarcodeDAOImpl
   
   public POBarcode getPOBarcodeByBarcode(String paramStringBarcode)
   {
-	 Query query = currentSession().createQuery("from po_barcode where barCode = :barCode");
+	 Query query = currentSession().createQuery("from POBarcode where barCode = :barCode AND status = :status");
 	 query.setParameter("barCode", paramStringBarcode);
-	 return (POBarcode)query.list().get(0);
+	 query.setParameter("status", "O");
+	 List<POBarcode> lstPOBarcode=query.list();
+	 POBarcode objPOBarcode=null;
+	 if(lstPOBarcode.isEmpty())
+		 return objPOBarcode;
+	 else 
+		 return (POBarcode)query.list().get(0);
   }
 
   public BigDecimal getSumOfPOBarcodeLengthByDocNo(int paramIntDocNo) {
-	  Query query = currentSession().createQuery("from po_barcode where docNo = :docNo");
+	  String hqlQuery="select sum(length) as totlength from POBarcode p where p.docNo = :docNo and p.status = :status";
+	  Query query = currentSession().createQuery(hqlQuery);
 	  query.setParameter("docNo", paramIntDocNo);
-	  return new BigDecimal(0);
+	  query.setParameter("status", "O");
+	  return new BigDecimal(query.uniqueResult().toString());
   }
   
 }

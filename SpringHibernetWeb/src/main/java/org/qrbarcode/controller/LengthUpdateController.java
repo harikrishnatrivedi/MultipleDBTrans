@@ -1,72 +1,167 @@
 package org.qrbarcode.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+import java.util.Locale;
 
-import org.qrbarcode.model.Person;
-import org.qrbarcode.model.User;
-import org.qrbarcode.service.PersonService;
-import org.qrbarcode.service.UserService;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import org.qrbarcode.service.POBarcodeService;
+import org.qrbarcode.service.UpdateLengthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.Reader;
+import com.google.zxing.ReaderException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+
+import org.qrbarcode.model.POBarcode;
+import org.qrbarcode.model.UpdateLength;
 
 @Controller
 public class LengthUpdateController
 {
   @Autowired
-  private PersonService personService;
+  private UpdateLengthService objUpdateLengthService;
+  
   @Autowired
-  private UserService userService;
+  private POBarcodeService objPOBarcodeService ;
   
-  @RequestMapping(value="/lengthUpdate", method=RequestMethod.GET)
-  public ModelAndView home() {
-      List<User> listUsers = userService.getUsers();
-      ModelAndView model = new ModelAndView("home");
-      model.addObject("userList", listUsers);
-      return model;
-  }
-   
-  @RequestMapping(value={"/persons"}, method=RequestMethod.GET)
-  public String listPersons(Model model)
-  {
-    model.addAttribute("person", new Person());
-    model.addAttribute("listPersons", this.personService.listPersons());
-    return "person";
+  @Autowired
+  MessageSource messageSource;
+  
+  @RequestMapping(value = {"/",  "/scanLengthBarCode" }, method = RequestMethod.GET)
+  public String scanBarCodeForLength(ModelMap model) {
+  	UpdateLength updateLength = new UpdateLength();
+      model.addAttribute("updateLength", updateLength);
+      System.out.println("updateLength : "+updateLength);
+      return "barcodedescanlength";
   }
   
-  @RequestMapping(value={"/person/add"}, method=RequestMethod.GET)
-  public String addPerson(@ModelAttribute("person") Person p)
-  {
-    p = new Person();
-    p.setCountry("india");
-    p.setName("ind");
-    if (p.getId() == 0) {
-      this.personService.addPerson(p);
-    } else {
-      this.personService.updatePerson(p);
-    }
-    System.out.println("$$$$$$$$$ Object Inserted.... $$$$$$$$$");
-    
-    return "redirect:/persons";
+  @RequestMapping(value = {"/",  "/scanLengthBarCode" }, method = RequestMethod.POST)
+  public String getBarCodeLengthDtl(UpdateLength updateLength, BindingResult result, ModelMap redirectedModel) {
+  	System.out.println("updateLength:::::::::::::::::"+updateLength);
+  	System.out.println("updateLength.getBarCode() : "+updateLength.getBarCode());
+  	POBarcode pOBarcode=objPOBarcodeService.getPOBarcodeByBarcode(updateLength.getBarCode());
+  	if(pOBarcode==null) {
+  		FieldError noBarcodeFoundError =new FieldError("barcode","barCode","Barcode not found.");//messageSource.getMessage("barcode.notfound", new String[]{updateLength.getBarCode()}, Locale.getDefault()));
+          result.addError(noBarcodeFoundError);
+  		return "barcodedescanlength";
+  	}else if(pOBarcode.getMrnNo()!=null) {
+  		System.out.println("System.out.println(pOBarcode.getMrnNo());" + pOBarcode.getMrnNo());
+  		FieldError mRNGeneratedError =new FieldError("barCode","barCode","MRN already issued.");//messageSource.getMessage("barcode.MRNIssued", new String[]{updateLength.getBarCode()}, Locale.getDefault()));
+          result.addError(mRNGeneratedError);
+  		return "barcodedescanlength";
+  	}
+  	System.out.println((pOBarcode.getMrnNo()!=null));
+  	updateLength.setBarCode(pOBarcode.getBarCode());
+  	updateLength.setItem(pOBarcode.getItem());
+  	updateLength.setItemDesc(pOBarcode.getProductName());
+  	updateLength.setOldLength(pOBarcode.getLength());
+  	System.out.println("updateLength:::::::"+updateLength);
+  	redirectedModel.clear();
+  	redirectedModel.addAttribute("updateLength", updateLength);
+  	
+  	return "barcodedescanlength";
   }
   
-  @RequestMapping({"/remove/{id}"})
-  public String removePerson(@PathVariable("id") int id)
-  {
-    this.personService.removePerson(id);
-    return "redirect:/persons";
+  @RequestMapping(value = {"/updateLengthForBarCode" }, method = RequestMethod.POST)
+  public String editBarCodeLengthDtl(UpdateLength lengthUpdate, BindingResult result, ModelMap redirectedModel) {
+  	try {
+  		objUpdateLengthService.updateLength(lengthUpdate);
+  	}catch(Exception ex){
+  		FieldError commonError = 
+  				new FieldError("barCode","barCode",ex.getMessage());
+  		result.addError(commonError);
+  		return "barcodedescanlength";
+  	}
+  	return "success";
   }
   
-  @RequestMapping({"/edit/{id}"})
-  public String editPerson(@PathVariable("id") int id, Model model)
-  {
-    model.addAttribute("person", this.personService.getPersonById(id));
-    model.addAttribute("listPersons", this.personService.listPersons());
-    return "person";
+  @RequestMapping(value = "/test", method = RequestMethod.GET) 
+  public String getAbcd(HttpServletRequest request) {
+  	return "test";
   }
+  
+  /*protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {*/
+  private static final long serialVersionUID = 1L;
+  @RequestMapping(value = "/test", method = RequestMethod.POST) //, consumes = MediaType.ALL_VALUE)
+  public @ResponseBody void getScanBarcode(HttpServletRequest request,
+   HttpServletResponse response,@RequestParam("blob") Part part) throws ServletException, IOException {
+
+		Result result = null;
+		Connection connection;
+		Statement statement;
+		String barCodeResult = "";
+		String resultBarcode="";
+		
+		/*if (txtBarcode != null) {
+			request.getParameter("txtBarcode").toString();
+			System.out.println("barCodeResult :"+txtBarcode);
+		} else*/ {
+			//Part part = request.getPart("blob");
+			String fileName = null;
+			try {
+
+				//part = request.getPart("blob");
+				fileName = null;
+
+				InputStream is = part.getInputStream();
+				BufferedImage image = ImageIO.read(is);
+
+				if (image != null) {
+					Reader reader = new MultiFormatReader();
+					LuminanceSource source = new BufferedImageLuminanceSource(image);
+					BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+					result = new MultiFormatReader().decode(bitmap);
+					System.out.println("result : "+result.getText());
+					response.getWriter().print("barcode: "+result.getText());
+				}
+				
+			} catch (ReaderException re) {
+				System.out.println("RE : " + re.toString());
+				// re.getStackTrace();
+				// re.getLocalizedMessage();
+				// re.printStackTrace();
+				response.getWriter().print("error");
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				response.getWriter().print("Exception");
+				// return "EX : "+ex.getMessage();
+			}
+		}
+		
+	}
+  
 }

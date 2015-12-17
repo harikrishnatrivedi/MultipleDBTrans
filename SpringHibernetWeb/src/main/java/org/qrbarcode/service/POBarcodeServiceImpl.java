@@ -40,8 +40,8 @@ public class POBarcodeServiceImpl
     this.pOBarcodeDAO.removePOBarcode(id);
   }
   
-  public void getPOBarcodeByBarcode(String barcode)
+  public POBarcode getPOBarcodeByBarcode(String barcode)
   {
-    this.pOBarcodeDAO.getPOBarcodeByBarcode(barcode);
+    return this.pOBarcodeDAO.getPOBarcodeByBarcode(barcode);
   }
 }
