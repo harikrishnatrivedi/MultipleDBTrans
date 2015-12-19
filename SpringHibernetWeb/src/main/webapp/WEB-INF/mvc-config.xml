@@ -35,25 +35,34 @@
 	    <property name="password" value="Barcode"/>
 	</bean>
 	
+	<bean id="secondarySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	    <property name="dataSource" ref="dataSourceNav" />
+		<property name="packagesToScan" value="org.qrbarcode.modelnav" />
+	</bean>
+	
 	<bean id="primarySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 	    <property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="org.qrbarcode.model" />
 	</bean>
 
-	<bean id="secondarySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-	    <property name="dataSource" ref="dataSourceNav" />
-		<property name="packagesToScan" value="org.qrbarcode.modelnav" />
-	</bean>
+	
 
-	<tx:annotation-driven />
+	<tx:annotation-driven  transaction-manager="transactionManager" />
 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 	    <property name="sessionFactory" ref="primarySessionFactory" />
+	    <property name="dataSource" ref="dataSource"/>
+	    <qualifier value="txPrimary"/>
 	</bean>
 
-	<tx:annotation-driven />
+	<tx:annotation-driven transaction-manager="transactionManager2" />
 	<bean id="transactionManager2" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 	    <property name="sessionFactory" ref="secondarySessionFactory" />
+	    <property name="dataSource" ref="dataSourceNav"/>
+	    <qualifier value="txSecondary"/>
 	</bean>
+	
+	<!-- <bean id="persistenceExceptionTranslationPostProcessor"
+      class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /> -->
 	
 	<bean id="multipartResolver"
         class="org.springframework.web.multipart.support.StandardServletMultipartResolver">

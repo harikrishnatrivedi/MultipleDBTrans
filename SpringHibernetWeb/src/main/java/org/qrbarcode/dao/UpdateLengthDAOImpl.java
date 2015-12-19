@@ -26,38 +26,45 @@ public class UpdateLengthDAOImpl
 	  @Autowired
 	  private MRNIssueDAO objMRNIssueDAO;
 	  
-  public void updateLength(UpdateLength objUpdateLength) throws Exception
+  public void updateLengthBarcodeDS(POBarcode paramObjPOBarcode, MainGRN paramObjMainGRN) throws Exception
   {
 	  try {
-		  POBarcode objPOBarcode=objPoBarcodeDAO.getPOBarcodeByBarcode(objUpdateLength.getBarCode());
-		  if(objPOBarcode==null){
-			  throw new Exception("BarcodeNotFound");
-		  }else{
-			  if(objPOBarcode.getMrnNo()!=null){
-				  throw new Exception("MRNGenerated");
-			  }else{
-				  if(objUpdateLength.getLength().compareTo(objUpdateLength.getOldLength())==0) {
-					  throw new Exception("NoUpdate");
-				  }else{
-					  MainGRN objMainGRN = objMainGrnDAO.getMainGRNByDocNo(objPOBarcode.getDocNo());
-					  BigDecimal objBigDecTotLengthInPOBarcode=objPoBarcodeDAO.getSumOfPOBarcodeLengthByDocNo(objPOBarcode.getDocNo());
-					  MRNIssue objMRNIssue=objMRNIssueDAO.getMRNIssueByEntryNo(objPOBarcode.getDocNo());
-					  if(objMainGRN.getQuantity().compareTo(objBigDecTotLengthInPOBarcode)!=0 && objMainGRN.getQuantity().compareTo(objMRNIssue.getQtyM())!=0){
-						  throw new Exception("TotalLengthMismatch");
-					  } else {
-						  objPOBarcode.setLength(objUpdateLength.getLength());
-						  objPoBarcodeDAO.updatePOBarcode(objPOBarcode);
-						  objMainGRN.setQuantity(objMainGRN.getQuantity().add(objUpdateLength.getLength()));
-						  objMainGrnDAO.updateMainGRN(objMainGRN);
-						  objMRNIssue.setQtyM(objMRNIssue.getQtyM().add(objUpdateLength.getLength()));
-						  System.out.println("Lenth is updated successfully.");
-					  }
-				  }
-			  }
-		  }
+		  objPoBarcodeDAO.updatePOBarcode(paramObjPOBarcode);
+		  objMainGrnDAO.updateMainGRN(paramObjMainGRN);
+		  System.out.println("Lenth is updated in Barcode DS successfully.");
 	  }catch(Exception ex){
 		  ex.printStackTrace();
 		  throw ex;
 	  }
   }
+  
+  public void updateLengthNAVDS(MRNIssue paramObjMRNIssue) throws Exception
+  {
+	  try {
+		  objMRNIssueDAO.updateMRNIssue(paramObjMRNIssue);
+		  System.out.println("Lenth is updated in NAV DS successfully.");
+	  }catch(Exception ex){
+		  ex.printStackTrace();
+		  throw ex;
+	  }
+  }
+  
+  public POBarcode updateLengthGetPOBarcode(String paramStrBarcode) {
+	return objPoBarcodeDAO.getPOBarcodeByBarcode(paramStrBarcode);
+  }
+  
+  public BigDecimal updateLengthGetSumOfPOBarcodeLengthByDocNo(int paramIntDocNo) {
+	  return objPoBarcodeDAO.getSumOfPOBarcodeLengthByDocNo(paramIntDocNo);
+  }
+  
+  public MainGRN updateLengthGetMainGRNByDocNo(int paramIntDocNo) {
+	  return objMainGrnDAO.getMainGRNByDocNo(paramIntDocNo);
+  }
+  
+  public MRNIssue updateLengthGetMRNIssueByEntryNo(int paramIntDocNo) {
+	  return objMRNIssueDAO.getMRNIssueByEntryNo(paramIntDocNo);
+  }
+  
+  
+  
 }

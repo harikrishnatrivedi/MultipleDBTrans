@@ -14,7 +14,7 @@ public class PersonDAOImpl
 {
   public void addPerson(Person p)
   {
-    currentSession2().persist(p);
+   // currentSession2().persist(p);
   }
   
   public void updatePerson(Person p)

@@ -1,6 +1,5 @@
 package org.qrbarcode.dao;
 
-import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -8,19 +7,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Transactional;
+
 
 public class GenericDAOImpl<E, PK extends Serializable>
   implements GenericDAO<E, PK>
 {
   private final Class<? extends E> persistentClass;
-  
   @Autowired
   @Qualifier("primarySessionFactory")
   private SessionFactory sessionFactory;
   
-  @Autowired
-  @Qualifier("secondarySessionFactory")
-  private SessionFactory sessionFactorySecond;
   
   public GenericDAOImpl()
   {
@@ -30,19 +27,21 @@ public class GenericDAOImpl<E, PK extends Serializable>
   protected Session getSession()
   {
     System.out.println("Session created?? 33 :" + this.sessionFactory);
-    
     return this.sessionFactory.openSession();
   }
   
   protected Session currentSession()
   {
-    System.out.println("sessionFactory :" + this.sessionFactory);
-    return this.sessionFactory.getCurrentSession();
-  }
-  
-  protected Session currentSession2()
-  {
-    return this.sessionFactorySecond.getCurrentSession();
+    System.out.println("sessionFactory 33 :" + this.sessionFactory);
+    Session s=this.sessionFactory.getCurrentSession();
+    System.out.println(sessionFactory.getStatistics().toString());
+    System.out.println(s.getStatistics());
+    if(s.isOpen()){
+    	System.out.println("session opened");
+    }else{
+    	System.out.println("session closed");
+    }
+    return s;
   }
   
   public E getByKey(PK key)

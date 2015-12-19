@@ -18,7 +18,7 @@ public class UserDAOImpl
     System.out.println("currentSession calling...");
     currentSession().save(user);
     System.out.println("Exception will be thrown...");
-    currentSession2().save(user);
+//    currentSession2().save(user);
     System.out.println("calling done...");
   }
   
@@ -32,7 +32,7 @@ public class UserDAOImpl
     Query query = currentSession().createQuery("from User where username = :username");
     query.setParameter("username", username);
     System.out.println(currentSession().createQuery("from User where username = :username").setParameter("username", username).list().get(0));
-    System.out.println(currentSession2().createQuery("from User where username = :username").setParameter("username", username).list().get(0));
+  //  System.out.println(currentSession2().createQuery("from User where username = :username").setParameter("username", username).list().get(0));
     return (User)query.list().get(0);
   }
   

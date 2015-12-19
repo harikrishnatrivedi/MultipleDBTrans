@@ -9,7 +9,7 @@ public abstract interface MRNIssueDAO
 {
   public abstract void addMRNIssue(MRNIssue paramObjMRNIssue);
   
-  public abstract void updateMRNIssue(MRNIssue paramObjPOBarcode);
+  public abstract void updateMRNIssue(MRNIssue paramObjMRNIssue);
   
   public abstract List<MRNIssue> listMRNIssues();
   

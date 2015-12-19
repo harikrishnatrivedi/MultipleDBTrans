@@ -72,7 +72,7 @@ public class LengthUpdateController
   public String getBarCodeLengthDtl(UpdateLength updateLength, BindingResult result, ModelMap redirectedModel) {
   	System.out.println("updateLength:::::::::::::::::"+updateLength);
   	System.out.println("updateLength.getBarCode() : "+updateLength.getBarCode());
-  	POBarcode pOBarcode=objPOBarcodeService.getPOBarcodeByBarcode(updateLength.getBarCode());
+  	POBarcode pOBarcode=updateLength.updateLengthGetPOBarcode(updateLength.getBarCode());
   	if(pOBarcode==null) {
   		FieldError noBarcodeFoundError =new FieldError("barcode","barCode","Barcode not found.");//messageSource.getMessage("barcode.notfound", new String[]{updateLength.getBarCode()}, Locale.getDefault()));
           result.addError(noBarcodeFoundError);

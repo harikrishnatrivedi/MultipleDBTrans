@@ -14,23 +14,23 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MRNIssueDAOImpl
-  extends GenericDAOImpl<MRNIssue, Integer>
+  extends GenericDAONavImpl<MRNIssue, Integer>
   implements MRNIssueDAO
 {
   public void addMRNIssue(MRNIssue paramObjMRNIssue)
   {
-    currentSession2().persist(paramObjMRNIssue);
+    currentSession().persist(paramObjMRNIssue);
   }
   
   public void updateMRNIssue(MRNIssue paramObjMRNIssue)
   {
-    currentSession2().update(paramObjMRNIssue);
+    currentSession().update(paramObjMRNIssue);
   }
   
   public List<MRNIssue> listMRNIssues()
   {
-    System.out.println("currentSession() : " + currentSession2());
-    List<MRNIssue> lstObjMRNIssue = currentSession2().createQuery("from MRNIssue").list();
+    System.out.println("currentSession() : " + currentSession());
+    List<MRNIssue> lstObjMRNIssue = currentSession().createQuery("from MRNIssue").list();
     for (MRNIssue objMRNIssue : lstObjMRNIssue) {
       System.out.println("MRNIssue List::" + objMRNIssue);
     }
@@ -48,7 +48,7 @@ public class MRNIssueDAOImpl
 	  
     /* MRNIssue objMRNIssue = (MRNIssue)currentSession2().load(MRNIssue.class, new Integer(paramIntEntryNo));
     System.out.println("MRNIssue loaded successfully, MRNIssue details=" + objMRNIssue);*/
-	Query query = currentSession2().createQuery("from MRNIssue where entryNo = : entryNo");
+	Query query = currentSession().createQuery("from MRNIssue where entryNo = :entryNo");
 	query.setParameter("entryNo", paramIntEntryNo);
 	MRNIssue objMRNIssue = (MRNIssue)query.uniqueResult();
     return objMRNIssue;
@@ -56,7 +56,7 @@ public class MRNIssueDAOImpl
   
   public void removeMRNIssue(int paramIntId) {
 	  
-    MRNIssue objMRNIssue = (MRNIssue)currentSession2().load(MRNIssue.class, new Integer(paramIntId));
+    MRNIssue objMRNIssue = (MRNIssue)currentSession().load(MRNIssue.class, new Integer(paramIntId));
     if (objMRNIssue != null) {
       currentSession().delete(objMRNIssue);
     }
