@@ -45,8 +45,8 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 
-import org.qrbarcode.model.POBarcode;
 import org.qrbarcode.model.UpdateLength;
+import org.qrbarcode.model.barcode.POBarcode;
 
 @Controller
 public class LengthUpdateController
@@ -55,7 +55,7 @@ public class LengthUpdateController
   private UpdateLengthService objUpdateLengthService;
   
   @Autowired
-  private POBarcodeService objPOBarcodeService ;
+  private POBarcodeService objPOBarcodeService;
   
   @Autowired
   MessageSource messageSource;
@@ -72,9 +72,9 @@ public class LengthUpdateController
   public String getBarCodeLengthDtl(UpdateLength updateLength, BindingResult result, ModelMap redirectedModel) {
   	System.out.println("updateLength:::::::::::::::::"+updateLength);
   	System.out.println("updateLength.getBarCode() : "+updateLength.getBarCode());
-  	POBarcode pOBarcode=updateLength.updateLengthGetPOBarcode(updateLength.getBarCode());
+  	POBarcode pOBarcode=objPOBarcodeService.getPOBarcodeByBarcode(updateLength.getBarCode());
   	if(pOBarcode==null) {
-  		FieldError noBarcodeFoundError =new FieldError("barcode","barCode","Barcode not found.");//messageSource.getMessage("barcode.notfound", new String[]{updateLength.getBarCode()}, Locale.getDefault()));
+  		FieldError noBarcodeFoundError=new FieldError("barcode","barCode","Barcode not found.");//messageSource.getMessage("barcode.notfound", new String[]{updateLength.getBarCode()}, Locale.getDefault()));
           result.addError(noBarcodeFoundError);
   		return "barcodedescanlength";
   	}else if(pOBarcode.getMrnNo()!=null) {

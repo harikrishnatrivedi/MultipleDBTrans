@@ -1,8 +1,8 @@
 package org.qrbarcode.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
-import org.qrbarcode.modelnav.MRNIssue;
+
+import org.qrbarcode.model.nav.MRNIssue;
 
 public abstract interface MRNIssueDAO
   extends GenericDAO<MRNIssue, Integer>

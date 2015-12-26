@@ -1,7 +1,8 @@
 package org.qrbarcode.service;
 
 import java.util.List;
-import org.qrbarcode.model.POBarcode;
+
+import org.qrbarcode.model.barcode.POBarcode;
 
 public abstract interface POBarcodeService
 {

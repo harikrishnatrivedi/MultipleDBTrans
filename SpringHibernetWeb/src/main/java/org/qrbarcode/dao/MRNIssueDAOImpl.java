@@ -1,36 +1,31 @@
 package org.qrbarcode.dao;
 
-import java.io.PrintStream;
-import java.math.BigDecimal;
+
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.qrbarcode.model.POBarcode;
-import org.qrbarcode.modelnav.MRNIssue;
+import org.qrbarcode.model.nav.MRNIssue;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MRNIssueDAOImpl
-  extends GenericDAONavImpl<MRNIssue, Integer>
+  extends GenericDAOImpl<MRNIssue, Integer>
   implements MRNIssueDAO
 {
   public void addMRNIssue(MRNIssue paramObjMRNIssue)
   {
-    currentSession().persist(paramObjMRNIssue);
+	  currentSecondarySession().persist(paramObjMRNIssue);
   }
   
   public void updateMRNIssue(MRNIssue paramObjMRNIssue)
   {
-    currentSession().update(paramObjMRNIssue);
+	  currentSecondarySession().update(paramObjMRNIssue);
   }
   
+  @SuppressWarnings("unchecked")
   public List<MRNIssue> listMRNIssues()
   {
-    System.out.println("currentSession() : " + currentSession());
-    List<MRNIssue> lstObjMRNIssue = currentSession().createQuery("from MRNIssue").list();
+	List<MRNIssue> lstObjMRNIssue = currentSecondarySession().createQuery("from MRNIssue").list();
     for (MRNIssue objMRNIssue : lstObjMRNIssue) {
       System.out.println("MRNIssue List::" + objMRNIssue);
     }
@@ -48,7 +43,7 @@ public class MRNIssueDAOImpl
 	  
     /* MRNIssue objMRNIssue = (MRNIssue)currentSession2().load(MRNIssue.class, new Integer(paramIntEntryNo));
     System.out.println("MRNIssue loaded successfully, MRNIssue details=" + objMRNIssue);*/
-	Query query = currentSession().createQuery("from MRNIssue where entryNo = :entryNo");
+	Query query = currentSecondarySession().createQuery("from MRNIssue where entryNo = :entryNo");
 	query.setParameter("entryNo", paramIntEntryNo);
 	MRNIssue objMRNIssue = (MRNIssue)query.uniqueResult();
     return objMRNIssue;
@@ -56,9 +51,9 @@ public class MRNIssueDAOImpl
   
   public void removeMRNIssue(int paramIntId) {
 	  
-    MRNIssue objMRNIssue = (MRNIssue)currentSession().load(MRNIssue.class, new Integer(paramIntId));
+    MRNIssue objMRNIssue = (MRNIssue)currentSecondarySession().load(MRNIssue.class, new Integer(paramIntId));
     if (objMRNIssue != null) {
-      currentSession().delete(objMRNIssue);
+    	currentSecondarySession().delete(objMRNIssue);
     }
     System.out.println("MRNIssue deleted successfully, MRNIssue details=" + objMRNIssue);
   }

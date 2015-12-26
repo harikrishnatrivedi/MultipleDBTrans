@@ -7,8 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.transaction.annotation.Transactional;
-
 
 public class GenericDAOImpl<E, PK extends Serializable>
   implements GenericDAO<E, PK>
@@ -16,81 +14,86 @@ public class GenericDAOImpl<E, PK extends Serializable>
   private final Class<? extends E> persistentClass;
   @Autowired
   @Qualifier("primarySessionFactory")
-  private SessionFactory sessionFactory;
+  private SessionFactory primarySessionFactory;
   
+  @Autowired
+  @Qualifier("secondarySessionFactory")
+  private SessionFactory secondarySessionFactory;
   
-  public GenericDAOImpl()
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+public GenericDAOImpl()
   {
     this.persistentClass = ((Class)((java.lang.reflect.ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1]);
   }
   
-  protected Session getSession()
+/*  protected Session getSession()
   {
     System.out.println("Session created?? 33 :" + this.sessionFactory);
     return this.sessionFactory.openSession();
   }
-  
-  protected Session currentSession()
+*/  
+  protected Session currentPrimarySession()
   {
-    System.out.println("sessionFactory 33 :" + this.sessionFactory);
-    Session s=this.sessionFactory.getCurrentSession();
-    System.out.println(sessionFactory.getStatistics().toString());
-    System.out.println(s.getStatistics());
-    if(s.isOpen()){
-    	System.out.println("session opened");
-    }else{
-    	System.out.println("session closed");
-    }
-    return s;
+	  System.out.println("current Primary Session :" + (this.primarySessionFactory.getCurrentSession()).hashCode());
+	  return this.primarySessionFactory.getCurrentSession();
   }
   
-  public E getByKey(PK key)
+  protected Session currentSecondarySession()
   {
-    return (E)currentSession().get(this.persistentClass, key);
+	  System.out.println("current Secondary Session :" + (this.secondarySessionFactory.getCurrentSession()).hashCode());
+	  return this.secondarySessionFactory.getCurrentSession();
   }
   
-  public E find(PK key)
+  @SuppressWarnings("unchecked")
+public E getByKey(PK key, Session session)
   {
-    return (E)currentSession().get(this.persistentClass, key);
+    return (E)session.get(this.persistentClass, key);
   }
   
-  public void persist(E entity)
+  @SuppressWarnings("unchecked")
+public E find(PK key, Session session)
   {
-    currentSession().persist(entity);
+    return (E)session.get(this.persistentClass, key);
   }
   
-  public void add(E entity)
+  public void persist(E entity, Session session)
   {
-    currentSession().save(entity);
+    session.persist(entity);
   }
   
-  public void delete(E entity)
+  public void add(E entity, Session session)
   {
-    currentSession().delete(entity);
+    session.save(entity);
   }
   
-  public void remove(E entity)
+  public void delete(E entity, Session session)
   {
-    currentSession().delete(entity);
+    session.delete(entity);
   }
   
-  public void saveOrUpdate(E entity)
+  public void remove(E entity, Session session)
   {
-    currentSession().saveOrUpdate(entity);
+    session.delete(entity);
   }
   
-  public void update(E entity)
+  public void saveOrUpdate(E entity, Session session)
   {
-    currentSession().saveOrUpdate(entity);
+    session.saveOrUpdate(entity);
   }
   
-  protected Criteria createEntityCriteria()
+  public void update(E entity, Session session)
   {
-    return currentSession().createCriteria(this.persistentClass);
+    session.saveOrUpdate(entity);
   }
   
-  public List<E> getAll()
+  protected Criteria createEntityCriteria(Session session)
   {
-    return currentSession().createCriteria(this.persistentClass).list();
+    return session.createCriteria(this.persistentClass);
+  }
+  
+  @SuppressWarnings("unchecked")
+public List<E> getAll(Session session)
+  {
+    return session.createCriteria(this.persistentClass).list();
   }
 }

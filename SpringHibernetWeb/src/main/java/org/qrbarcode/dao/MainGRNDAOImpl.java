@@ -1,13 +1,11 @@
 package org.qrbarcode.dao;
 
-import java.io.PrintStream;
+
 import java.util.List;
 
-import org.hibernate.Criteria;
+
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.qrbarcode.model.MainGRN;
+import org.qrbarcode.model.barcode.MainGRN;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,18 +15,20 @@ public class MainGRNDAOImpl
 {
   public void addMainGRN(MainGRN paramObjMainGRN)
   {
-    currentSession().persist(paramObjMainGRN);
+	  currentPrimarySession().persist(paramObjMainGRN);
   }
   
   public void updateMainGRN(MainGRN paramObjMainGRN)
   {
-    currentSession().update(paramObjMainGRN);
+	  currentPrimarySession().update(paramObjMainGRN);
   }
   
+  @SuppressWarnings("unchecked")
   public List<MainGRN> listMainGRN()
   {
-    System.out.println("currentSession() : " + currentSession());
-    List<MainGRN> lstObjMainGRNs = currentSession().createQuery("from Main_Grn").list();
+    System.out.println("currentSession() : " + currentPrimarySession());
+    
+	List<MainGRN> lstObjMainGRNs = currentPrimarySession().createQuery("from Main_Grn").list();
     /*for (MainGRN objMainGRN : lstObjMainGRNs) {
       System.out.println("POBarcode List::" + objMainGRN);
     }*/
@@ -37,16 +37,16 @@ public class MainGRNDAOImpl
   
   public MainGRN getMainGRNById(int paramIntId)
   {
-    MainGRN objMainGRN = (MainGRN)currentSession().load(MainGRN.class, new Integer(paramIntId));
+    MainGRN objMainGRN = (MainGRN)currentPrimarySession().load(MainGRN.class, new Integer(paramIntId));
     System.out.println("MainGRN loaded successfully, MainGRN details=" + objMainGRN);
     return objMainGRN;
   }
   
   public void removeMainGRN(int paramIntId)
   {
-    MainGRN objMainGRN = (MainGRN)currentSession().load(MainGRN.class, new Integer(paramIntId));
+    MainGRN objMainGRN = (MainGRN)currentPrimarySession().load(MainGRN.class, new Integer(paramIntId));
     if (objMainGRN != null) {
-      currentSession().delete(objMainGRN);
+    	currentPrimarySession().delete(objMainGRN);
     }else{
     	try{
     	throw new Exception("NoRecordFoundToRemove.");
@@ -58,7 +58,7 @@ public class MainGRNDAOImpl
   }
 
   public MainGRN getMainGRNByDocNo(int paramIntDocNo) {
-	  Query query = currentSession().createQuery("from MainGRN where Docno = :docNo");
+	  Query query = currentPrimarySession().createQuery("from MainGRN where Docno = :docNo");
 	  query.setParameter("docNo", paramIntDocNo);
 	  return (MainGRN) query.list().get(0);  
   }

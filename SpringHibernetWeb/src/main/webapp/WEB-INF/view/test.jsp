@@ -55,6 +55,7 @@
                        	<div class="panel-body">
                        		<div class="form-group">
 								<label>Text Input</label>
+									
 							        <input class="form-control" type="text" id="txtBarcode" name="txtBarcode">
 							        <p class="help-block">Please enter barcode to get detials.</p>
 							</div>
@@ -317,6 +318,12 @@
           }
 	
 	</script>
-	
+	Context path : <%=request.getContextPath()%>
+	Local Address : <%=request.getLocalAddr()%>
+	Local Name : <%=request.getLocalName()%>
+	Local Port : <%=request.getLocalPort()%>
+	Local Remote Address : <%=request.getRemoteAddr()%>
+	Local Request URI : <%=request.getRequestURI()%>
+	Get Path Info : <%=request.getPathInfo()%>
 	
 </html>

@@ -5,7 +5,7 @@ package org.qrbarcode.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Entity;
+
 import javax.persistence.Transient;
 
 /**
@@ -14,6 +14,7 @@ import javax.persistence.Transient;
  */
  
 
+@SuppressWarnings("serial")
 public class UpdateLength implements Serializable{
  
 	@Transient

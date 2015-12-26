@@ -2,7 +2,8 @@ package org.qrbarcode.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
-import org.qrbarcode.model.POBarcode;
+
+import org.qrbarcode.model.barcode.POBarcode;
 
 public abstract interface POBarcodeDAO
   extends GenericDAO<POBarcode, Integer>

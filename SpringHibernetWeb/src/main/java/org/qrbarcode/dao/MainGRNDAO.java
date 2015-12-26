@@ -1,7 +1,6 @@
 package org.qrbarcode.dao;
 
-import java.util.List;
-import org.qrbarcode.model.MainGRN;
+import org.qrbarcode.model.barcode.MainGRN;
 
 public abstract interface MainGRNDAO
   extends GenericDAO<MainGRN, Integer>
