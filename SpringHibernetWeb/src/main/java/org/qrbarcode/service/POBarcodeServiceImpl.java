@@ -46,4 +46,8 @@ public class POBarcodeServiceImpl
   {
     return this.pOBarcodeDAO.getPOBarcodeByBarcode(barcode);
   }
+  
+  public int getTotQtyBarcodeByMRNNo(String paramIntMrnNo){
+	  return this.pOBarcodeDAO.getTotQtyBarcodeByMRNNo(paramIntMrnNo);
+  }
 }

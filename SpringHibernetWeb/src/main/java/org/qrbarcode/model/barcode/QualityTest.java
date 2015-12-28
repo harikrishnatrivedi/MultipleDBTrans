@@ -187,7 +187,7 @@ public class QualityTest {
 	private String qtyAll;
 	
 	@OneToMany(mappedBy="QUALITY_TEST_QUALITY_PARAM_DETAILS")
-	private Set<QualityTestQualityParamDetails> lstObjQualityTestQualityParamDetails;
+	private Set<QualityParameterDetails> lstObjQualityTestQualityParamDetails;
 	
 	/**
 	 * @return the slNo

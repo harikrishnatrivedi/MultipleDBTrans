@@ -57,6 +57,13 @@ public class POBarcodeDAOImpl
 	 return (POBarcode)query.uniqueResult();
   }
 
+  public int getTotQtyBarcodeByMRNNo(String paramIntMrnNo){
+	  Query query = currentPrimarySession().createQuery("select count(*) as totqty from POBarcode where mrnNo = :mrnNo AND status = :status");
+	  query.setParameter("mrnNo", paramIntMrnNo);
+	  query.setParameter("status", "O");
+	  return Integer.parseInt(query.uniqueResult().toString());
+  }
+  
   public BigDecimal getSumOfPOBarcodeLengthByDocNo(int paramIntDocNo) {
 	  String hqlQuery="select sum(length) as totlength from POBarcode p where p.docNo = :docNo and p.status = :status";
 	  Query query = currentPrimarySession().createQuery(hqlQuery);

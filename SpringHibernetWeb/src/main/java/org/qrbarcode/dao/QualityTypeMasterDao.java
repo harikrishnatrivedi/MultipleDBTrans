@@ -18,7 +18,7 @@ public interface QualityTypeMasterDao
  
     void saveQualityTypeMaster(QualityTypeMaster qualityTypeMaster);
      
-    void deleteQualityTypeMasterByQltyTypeMstCode(String qltyTypeMstCode);
+    void deleteQualityTypeMasterByQualityTypeMasterCode(String qltyTypeMstCode);
      
     List<QualityTypeMaster> findAllQualityTypeMaster();
     

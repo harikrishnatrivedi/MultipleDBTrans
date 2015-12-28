@@ -17,4 +17,6 @@ public abstract interface POBarcodeService
   public abstract void removePOBarcode(int paramIntId);
   
   public abstract POBarcode getPOBarcodeByBarcode(String paramStringBarcode);
+  
+  public abstract int getTotQtyBarcodeByMRNNo(String paramIntMrnNo);
 }

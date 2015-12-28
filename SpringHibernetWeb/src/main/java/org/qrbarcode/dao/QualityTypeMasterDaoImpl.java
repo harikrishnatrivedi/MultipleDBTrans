@@ -34,7 +34,7 @@ public class QualityTypeMasterDaoImpl
         persist(qualityTypeMaster,currentPrimarySession());
     }
 
-    public void deleteQualityTypeMasterByQltyTypeMstCode(String qltyTypeMstCode) {
+    public void deleteQualityTypeMasterByQualityTypeMasterCode(String qltyTypeMstCode) {
         Query query = currentPrimarySession().createSQLQuery("delete from QUALITY_SUB_TYPE_MST where QTY_TYPE_CODE= :qltyTypeMstCode");
         query.setString("qltyTypeMstCode", qltyTypeMstCode);
         query.executeUpdate();
@@ -45,10 +45,4 @@ public class QualityTypeMasterDaoImpl
         Criteria criteria = createEntityCriteria(currentPrimarySession());
         return (List<QualityTypeMaster>) criteria.list();
     }
-
-   public QualityTypeMaster findPOBarcodeByBarCode(String qltyTypeMstCode) {
-        Criteria criteria = createEntityCriteria(currentPrimarySession());
-        criteria.add(Restrictions.eq("qtyTypeCode", qltyTypeMstCode));
-        return (QualityTypeMaster) criteria.uniqueResult();
-    }   
 }

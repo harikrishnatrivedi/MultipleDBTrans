@@ -20,7 +20,7 @@ public interface QualitySubTypeMasterDao
  
     void saveQualitySubTypeMaster(QualitySubTypeMaster qualitySubTypeMaster);
      
-    void deleteQualitySubTypeMasterByQltySubTypeMasterCode(String qltySubTypeMasterCode);
+    void deleteQualitySubTypeMasterByQualitySubTypeMasterCode(String qltySubTypeMasterCode);
      
     List<QualitySubTypeMaster> findAllQualitySubTypeMaster();
     

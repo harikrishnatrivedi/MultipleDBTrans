@@ -18,7 +18,7 @@ import org.qrbarcode.model.barcode.QualityTest;
 @Repository("qltyTestCode")
 public class QualityTestDaoImpl 
 	extends GenericDAOImpl<QualityTest, Integer>
-	implements  QualityTestDao {
+	implements  QualityTestDAO {
  
     public QualityTest findByQltyTestCode(String qltyTestCode) {
     	Criteria criteria = createEntityCriteria(currentPrimarySession());

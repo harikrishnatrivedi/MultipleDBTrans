@@ -5,7 +5,7 @@ package org.qrbarcode.service;
 
 import java.util.List;
 
-import org.qrbarcode.dao.QualityTestDao;
+import org.qrbarcode.dao.QualityTestDAO;
 import org.qrbarcode.model.barcode.QualityTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class QualityTestServiceImpl implements QualityTestService {
  
     @Autowired
-    private QualityTestDao dao;
+    private QualityTestDAO dao;
      
     public QualityTest findByQltyTestCode(String qltyTestCode) {
     	

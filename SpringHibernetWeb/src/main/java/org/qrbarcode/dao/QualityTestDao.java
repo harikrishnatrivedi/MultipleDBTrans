@@ -12,7 +12,7 @@ import org.qrbarcode.model.barcode.QualityTest;
  * @author harikrishna.trivedi
  *
  */
-public interface QualityTestDao
+public interface QualityTestDAO
 	extends GenericDAO<QualityTest, Integer> {
  
 	QualityTest findByQltyTestCode(String qltyTestCode);

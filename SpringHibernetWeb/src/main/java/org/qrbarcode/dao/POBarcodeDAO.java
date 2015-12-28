@@ -21,4 +21,6 @@ public abstract interface POBarcodeDAO
   public abstract POBarcode getPOBarcodeByBarcode(String paramStringBarcode);
   
   public abstract BigDecimal getSumOfPOBarcodeLengthByDocNo(int paramIntDocNo);
+  
+  public abstract int getTotQtyBarcodeByMRNNo(String paramIntMrnNo);
 }
