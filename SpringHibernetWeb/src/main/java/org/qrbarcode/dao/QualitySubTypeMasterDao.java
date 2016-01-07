@@ -13,7 +13,7 @@ import org.qrbarcode.model.barcode.QualitySubTypeMaster;
  * @author harikrishna.trivedi
  *
  */
-public interface QualitySubTypeMasterDao 
+public interface QualitySubTypeMasterDAO 
 	extends GenericDAO<QualitySubTypeMaster, Integer> {
  
 	QualitySubTypeMaster findByQltySubTypeMasterCode(String qltySubTypeMasterCode);
@@ -23,5 +23,7 @@ public interface QualitySubTypeMasterDao
     void deleteQualitySubTypeMasterByQualitySubTypeMasterCode(String qltySubTypeMasterCode);
      
     List<QualitySubTypeMaster> findAllQualitySubTypeMaster();
+    
+    List<QualitySubTypeMaster> findAllQualitySubTypeMasterByTypeCode(String paramStrTypeCode);
     
 }

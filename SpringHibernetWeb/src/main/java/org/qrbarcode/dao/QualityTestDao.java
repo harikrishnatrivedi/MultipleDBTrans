@@ -23,4 +23,5 @@ public interface QualityTestDAO
      
     List<QualityTest> findAllQualityTest();
     
+    public QualityTest findQutalityTestByqltyBarcode(String paramStrBarcode);
 }

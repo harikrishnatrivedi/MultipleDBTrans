@@ -4,10 +4,12 @@
 package org.qrbarcode.model.barcode;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,7 +17,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+
+import javax.persistence.CascadeType;
 
 /**
  * @author harikrishna.trivedi
@@ -30,13 +35,13 @@ public class QualityTest {
 	private Integer slNo;
 
 	@Id
-	@Size(max = 15)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "QTY_TEST_CODE", nullable = false)
-	private String qtyTestCode;
+	private int qtyTestCode;
 
 	@Size(max = 25)
 	@Column(name = "BARCODE", nullable = false)
-	private String mrnNo;
+	private String barCode;
 
 	@Size(max = 20)
 	@Column(name = "ITEM_CODE", nullable = true)
@@ -50,6 +55,12 @@ public class QualityTest {
 	@Column(name = "MRN_NUMBER", nullable = true)
 	private String mrnNumber;
 
+	@Transient
+	private String qtyTypeCode;
+	
+	@Transient
+	private String qtySubTypeCode;
+	
 	@ManyToOne
 	@JoinColumn(name="QTY_TYPE_CODE")
 	private QualityTypeMaster objQtyTypeMaster;
@@ -159,12 +170,40 @@ public class QualityTest {
 	private BigDecimal fittingHeightMax;*/
 
 	@Size(max = 1)
-	@Column(name = "QTY_STATUS", nullable = true)
+	@Column(name = "QTY_STATUS", nullable = false)
 	private String qtyStatus;
 
 	@Size(max = 1)
-	@Column(name = "QTY_REG_FLAG", nullable = true)
+	@Column(name = "QTY_REG_FLAG", nullable = false)
 	private String qtyRegFlag;
+
+	/**
+	 * @return the barCode
+	 */
+	public String getBarCode() {
+		return barCode;
+	}
+
+	/**
+	 * @param barCode the barCode to set
+	 */
+	public void setBarCode(String barCode) {
+		this.barCode = barCode;
+	}
+
+	/**
+	 * @return the lstObjQualityTestQualityParamDetails
+	 */
+	public List<QualityParameterDetails> getLstObjQualityTestQualityParamDetails() {
+		return lstObjQualityTestQualityParamDetails;
+	}
+
+	/**
+	 * @param lstObjQualityTestQualityParamDetails the lstObjQualityTestQualityParamDetails to set
+	 */
+	public void setLstObjQualityTestQualityParamDetails(List<QualityParameterDetails> lstObjQualityTestQualityParamDetails) {
+		this.lstObjQualityTestQualityParamDetails = lstObjQualityTestQualityParamDetails;
+	}
 
 	@Size(max = 150)
 	@Column(name = "QTY_REG_REMARKS", nullable = true)
@@ -186,8 +225,8 @@ public class QualityTest {
 	@Column(name = "QTY_ALL", nullable = true)
 	private String qtyAll;
 	
-	@OneToMany(mappedBy="QUALITY_TEST_QUALITY_PARAM_DETAILS")
-	private Set<QualityParameterDetails> lstObjQualityTestQualityParamDetails;
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="objQyalityTest")
+	private List<QualityParameterDetails> lstObjQualityTestQualityParamDetails;
 	
 	/**
 	 * @return the slNo
@@ -206,29 +245,15 @@ public class QualityTest {
 	/**
 	 * @return the qtyTestCode
 	 */
-	public String getQtyTestCode() {
+	public int getQtyTestCode() {
 		return qtyTestCode;
 	}
 
 	/**
 	 * @param qtyTestCode the qtyTestCode to set
 	 */
-	public void setQtyTestCode(String qtyTestCode) {
+	public void setQtyTestCode(int qtyTestCode) {
 		this.qtyTestCode = qtyTestCode;
-	}
-
-	/**
-	 * @return the mrnNo
-	 */
-	public String getMrnNo() {
-		return mrnNo;
-	}
-
-	/**
-	 * @param mrnNo the mrnNo to set
-	 */
-	public void setMrnNo(String mrnNo) {
-		this.mrnNo = mrnNo;
 	}
 
 	/**
@@ -849,20 +874,54 @@ public class QualityTest {
 		this.objQtyTypeMaster = objQtyTypeMaster;
 	}
 
+	
+	
+	/**
+	 * @return the qtyTypeCode
+	 */
+	public String getQtyTypeCode() {
+		return qtyTypeCode;
+	}
+
+	/**
+	 * @param qtyTypeCode the qtyTypeCode to set
+	 */
+	public void setQtyTypeCode(String qtyTypeCode) {
+		this.qtyTypeCode = qtyTypeCode;
+	}
+
+	/**
+	 * @return the qtySubTypeCode
+	 */
+	public String getQtySubTypeCode() {
+		return qtySubTypeCode;
+	}
+
+	/**
+	 * @param qtySubTypeCode the qtySubTypeCode to set
+	 */
+	public void setQtySubTypeCode(String qtySubTypeCode) {
+		this.qtySubTypeCode = qtySubTypeCode;
+	}
+
 	@Override
 	public String toString() {
-		return "barCodeCutting [slNo=" + slNo +
+		return "objQualityTest [slNo=" + slNo +
 				", qtyTestCode=" + qtyTestCode +
-				", mrnNo=" + mrnNo +
+				", barCode=" + barCode +
+				", qtyTypeCode=" + qtyTypeCode +
+				", qtySubTypeCode=" + qtySubTypeCode +
 				", itemCode=" + itemCode +
 				", itemDesc=" + itemDesc +
 				", mrnNumber=" + mrnNumber +
-				", objQtyTypeMaster=" + objQtyTypeMaster.toString() +
+				", objQtyTypeMaster=" + objQtyTypeMaster +
 				", qtyTypeName=" + qtyTypeName +
-				", objQtySubTypeMaster=" + objQtySubTypeMaster.toString() +
+				", objQtySubTypeMaster=" + objQtySubTypeMaster +
 				", qtySubTypeName=" + qtySubTypeName +
 				", heatNo=" + heatNo +
 				", controlNo=" + controlNo +
+//				", lstObjQualityTestQualityParamDetails=" + lstObjQualityTestQualityParamDetails +
+				
 	/*			", pipeOutsideDiaMin=" + pipeOutsideDiaMin +
 				", pipeOutsideDiaMax=" + pipeOutsideDiaMax +
 				", pipeThiknessMin=" + pipeThiknessMin +

@@ -50,12 +50,12 @@ public class UpdateLengthServiceDAOImpl
 						  objPOBarcode.setLength(paramObjUpdateLength.getLength());
 						  objMainGRN.setQuantity(objMainGRN.getQuantity().add(paramObjUpdateLength.getLength()));
 						  objMRNIssue.setQtyM(objMRNIssue.getQtyM().add(paramObjUpdateLength.getLength()));
-						  objPoBarcodeDAO.saveOrUpdate(objPOBarcode, currentPrimarySession());
-						  //objPoBarcodeDAO.updatePOBarcode(objPOBarcode);
-						  objMainGrnDAO.saveOrUpdate(objMainGRN, currentPrimarySession());
-						  //objMainGrnDAO.updateMainGRN(objMainGRN);
-						  objMRNIssueDAO.saveOrUpdate(objMRNIssue, currentSecondarySession());
-						  //objMRNIssueDAO.updateMRNIssue(objMRNIssue);
+						  //objPoBarcodeDAO.saveOrUpdate(objPOBarcode, currentPrimarySession());
+						  objPoBarcodeDAO.updatePOBarcode(objPOBarcode);
+						  //objMainGrnDAO.saveOrUpdate(objMainGRN, currentPrimarySession());
+						  objMainGrnDAO.updateMainGRN(objMainGRN);
+						  //objMRNIssueDAO.saveOrUpdate(objMRNIssue, currentSecondarySession());
+						  objMRNIssueDAO.updateMRNIssue(objMRNIssue);
 					  }
 				  }
 			  }

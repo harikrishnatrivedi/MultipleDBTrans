@@ -8,15 +8,15 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
 import org.qrbarcode.model.barcode.QualityTest;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author harikrishna.trivedi
  *
  */ 
-@Repository("qltyTestCode")
-public class QualityTestDaoImpl 
+@Repository("qualityTest")
+public class QualityTestDAOImpl 
 	extends GenericDAOImpl<QualityTest, Integer>
 	implements  QualityTestDAO {
  
@@ -33,6 +33,8 @@ public class QualityTestDaoImpl
         currentPrimarySession().persist(qualityTest);
     }
  
+    
+    
     public void deleteQualityTestByQltyTestCode(String qltyTestCode) {
         Query query = currentPrimarySession().createSQLQuery("delete from QUALITY_TEST where qltyTestCode = :qltyTestCode");
         query.setString("qltyTestCode", qltyTestCode);
@@ -45,9 +47,9 @@ public class QualityTestDaoImpl
         return (List<QualityTest>) criteria.list();
     }
  
-   /*public QualityTest findQutalityTestByqltyTestCode(String qltyTestCode) {
-        Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("qltyTestCode", qltyTestCode));
+   public QualityTest findQutalityTestByqltyBarcode(String paramStrBarcode) {
+        Criteria criteria = currentPrimarySession().createCriteria(QualityTest.class);
+        criteria.add(Restrictions.eq("barCode", paramStrBarcode));
         return (QualityTest) criteria.uniqueResult();
-    }*/
+    }
 }

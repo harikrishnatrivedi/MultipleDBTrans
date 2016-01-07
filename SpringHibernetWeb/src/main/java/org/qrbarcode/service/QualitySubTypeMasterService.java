@@ -24,4 +24,5 @@ public interface QualitySubTypeMasterService {
  
     List<QualitySubTypeMaster> findAllQualitySubTypeMaster(); 
      
+    List<QualitySubTypeMaster> findAllQualitySubTypeMasterByTypeCode(String paramStrTypeCode);
 }

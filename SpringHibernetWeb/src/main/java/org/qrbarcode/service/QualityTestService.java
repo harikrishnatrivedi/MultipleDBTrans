@@ -24,6 +24,8 @@ public interface QualityTestService {
  
     List<QualityTest> findAllQualityTest(); 
      
+    public QualityTest findQutalityTestByqltyBarcode(String paramStrBarcode);
+    
     //boolean isQualityTestCodeUnique(String qltyTestCode);
  
     //BigDecimal countQulityTestByQltyTestCode(String qltyTestCode);

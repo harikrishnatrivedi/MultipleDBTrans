@@ -11,7 +11,7 @@ import org.qrbarcode.model.barcode.QualityTypeMaster;
  * @author harikrishna.trivedi
  *
  */
-public interface QualityTypeMasterDao 
+public interface QualityTypeMasterDAO 
 	extends GenericDAO<QualityTypeMaster, Integer> {
  
 	QualityTypeMaster findByQltyTypeMstCode(String qltyTypeMstCode);

@@ -11,7 +11,7 @@ import org.qrbarcode.model.barcode.StoreInventoryDtl;
  * @author harikrishna.trivedi
  *
  */
-public interface StoreInventoryDtlDao 
+public interface StoreInventoryDtlDAO 
 	extends GenericDAO<StoreInventoryDtl, Integer> {
  
 	StoreInventoryDtl findByBarCode(String barCode);

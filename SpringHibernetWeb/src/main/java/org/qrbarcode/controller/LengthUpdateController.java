@@ -1,52 +1,19 @@
 package org.qrbarcode.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-import java.util.Locale;
-
-import javax.imageio.ImageIO;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
+import org.qrbarcode.model.UpdateLength;
+import org.qrbarcode.model.barcode.POBarcode;
 import org.qrbarcode.service.POBarcodeService;
 import org.qrbarcode.service.UpdateLengthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.Reader;
-import com.google.zxing.ReaderException;
-import com.google.zxing.Result;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-import com.google.zxing.common.HybridBinarizer;
-
-import org.qrbarcode.model.UpdateLength;
-import org.qrbarcode.model.barcode.POBarcode;
 
 @Controller
 public class LengthUpdateController
@@ -74,12 +41,12 @@ public class LengthUpdateController
   	System.out.println("updateLength.getBarCode() : "+updateLength.getBarCode());
   	POBarcode pOBarcode=objPOBarcodeService.getPOBarcodeByBarcode(updateLength.getBarCode());
   	if(pOBarcode==null) {
-  		FieldError noBarcodeFoundError=new FieldError("barcode","barCode","Barcode not found.");//messageSource.getMessage("barcode.notfound", new String[]{updateLength.getBarCode()}, Locale.getDefault()));
+  		FieldError noBarcodeFoundError=new FieldError("barCode","barCode","Barcode not found.");//messageSource.getMessage("barcode.notfound", new String[]{updateLength.getBarCode()}, Locale.getDefault()));
           result.addError(noBarcodeFoundError);
   		return "barcodedescanlength";
   	}else if(pOBarcode.getMrnNo()!=null) {
   		System.out.println("System.out.println(pOBarcode.getMrnNo());" + pOBarcode.getMrnNo());
-  		FieldError mRNGeneratedError =new FieldError("barCode","barCode","MRN already issued.");//messageSource.getMessage("barcode.MRNIssued", new String[]{updateLength.getBarCode()}, Locale.getDefault()));
+  		FieldError mRNGeneratedError =new FieldError("barCode","barCode","MRN already generated.");//messageSource.getMessage("barcode.MRNIssued", new String[]{updateLength.getBarCode()}, Locale.getDefault()));
           result.addError(mRNGeneratedError);
   		return "barcodedescanlength";
   	}
@@ -115,7 +82,7 @@ public class LengthUpdateController
   
   /*protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {*/
-  private static final long serialVersionUID = 1L;
+ /* private static final long serialVersionUID = 1L;
   @RequestMapping(value = "/test", method = RequestMethod.POST) //, consumes = MediaType.ALL_VALUE)
   public @ResponseBody void getScanBarcode(HttpServletRequest request,
    HttpServletResponse response,@RequestParam("blob") Part part) throws ServletException, IOException {
@@ -126,10 +93,10 @@ public class LengthUpdateController
 		String barCodeResult = "";
 		String resultBarcode="";
 		
-		/*if (txtBarcode != null) {
+		if (txtBarcode != null) {
 			request.getParameter("txtBarcode").toString();
 			System.out.println("barCodeResult :"+txtBarcode);
-		} else*/ {
+		} else {
 			//Part part = request.getPart("blob");
 			String fileName = null;
 			try {
@@ -162,6 +129,6 @@ public class LengthUpdateController
 			}
 		}
 		
-	}
+	}*/
   
 }

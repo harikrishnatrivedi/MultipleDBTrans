@@ -6,7 +6,7 @@ package org.qrbarcode.service;
 import java.util.List;
 
 import org.qrbarcode.dao.QualityTestDAO;
-import org.qrbarcode.dao.QualityTypeMasterDao;
+import org.qrbarcode.dao.QualityTypeMasterDAO;
 import org.qrbarcode.model.barcode.QualityTypeMaster;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 
-@Service("qualityTestService")
+@Service//("qualityTypeMasterService")
 @Transactional
 public class QualityTypeMasterServiceImpl implements QualityTypeMasterService {
  
     @Autowired
-    private QualityTypeMasterDao objQualityTypeMasterDAO;
+    private QualityTypeMasterDAO objQualityTypeMasterDAO;
      
     public QualityTypeMaster findByQualityTypeMasterCode(String qltyTestCode) {
     	
@@ -48,6 +48,7 @@ public class QualityTypeMasterServiceImpl implements QualityTypeMasterService {
     }
      
     public List<QualityTypeMaster> findAllQualityTypeMaster() {
+    	System.out.println("QualityTypeMasterListServiceImpl");
         return objQualityTypeMasterDAO.findAllQualityTypeMaster();
     }
 }

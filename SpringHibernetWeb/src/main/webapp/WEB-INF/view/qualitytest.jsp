@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 
@@ -314,7 +315,6 @@
             	<div class="col-lg-12">
             		<div class="panel-body">
                             <!-- Button trigger modal -->
-                            
                             <!-- Modal -->
                             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -332,7 +332,6 @@
 														<button id="save" data-toggle="tooltip" title="Image shoot" type="button" class="btn btn-info btn-sm disabled"><span class="glyphicon glyphicon-picture"></span></button>
 									                    <!--<button id="stop" data-toggle="tooltip" title="Stop" type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-stop"></span></button>
 									                    <button id="stopAll" data-toggle="tooltip" title="Stop streams" type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-stop"></span></button>-->
-
 													</div>
 												</div>
 												<div class="panel-body">
@@ -378,27 +377,71 @@
                         <div class="panel-heading">
                             Quality Test
                         </div>
-                        <form:form name="qualityTest" method="POST" onsubmit="return checkBarcode();">
+                        <form:form name="qualityTest" method="POST" onsubmit="return formSubmit();" modelAttribute="qualityTest">
                         <div class="panel-body">
                         	
-                        	<button class="btn btn-danger btn-circle btn-xl" data-toggle="modal" data-target="#myModal">
-                                <i class="fa fa-qrcode"></i>
-                            </button>
-                            	<div class="form-group has-error">
-									<label class="control-label" for="inputError"><form:errors path="qtyChk" /></label>
+                        		<div class="form-group has-error">
+                        			<lebel>Barcode</lebel>
+									<label class="control-label" for="inputError"><form:errors path="barCode" /></label>
 								</div>
-									Barcode<br />
-				   					<form:input path="barCode" class="form-control" id="barCode" /> <br/>
+								<div class="form-group">
+                                    <form:input path="barCode" class="form-control" id="barCode" placeholder="Enter Barcode." />
+                                </div>
+								<button type="button" id="btnGetBarcode" onclick="getBarcodeData();" class="btn btn-primary btn-lg btn-block">Get Data</button>
+								<div class="form-group">
+                                    <label>Item : </label><p class="form-control-static">${qualityTest.itemCode}</p>
+                                </div>
+                                <div class="form-group">
+                                	<lebel>Item Description : </lebel><p class="form-control-static">${qualityTest.itemDesc}</p>
+                                </div>
+                                <div class="form-group">
+                                	<lebel>MRN Number : </lebel><p class="form-control-static">${qualityTest.mrnNumber}</p>
+                                </div>
+				   				<div class="form-group">
+                                	<lebel>${totalQty}</lebel>
+                                </div>
+				   				<div class="form-group">
+                                    <label>Select Type</label>
+	                                <form:select path="qtyTypeCode" class="form-control" onchange="getSubType();">
+					   					 <form:option value="">Select Type</form:option>
+								       	<form:options items="${lstAllQualityTypeMaster}" />
+					   				</form:select>            
+                                </div>
+                                <div class="form-group">
+                                    <label>Select Type</label>
+	                                <form:select path="qtySubTypeCode" class="form-control" onchange="getParameter();">
+					   					<form:option value="">Select Sub Type</form:option>
+								       	<form:options items="${lstAllQualitySubTypeMaster}" />
+					   				</form:select>            
+                                </div>
 				   				
-				   				<button type="button" class="btn btn-primary" onclick="getBarcodeData();">Get Data</button><br />
-				   				Item<br /><form:input path="item" class="form-control" id="item" readOnly="true" /><br />
-				   				Item Description<br /><form:input class="form-control" path="itemDesc" readOnly="true" id="itemDesc" /><br />
-				   				Old Length<br /><form:input path="oldLength" class="form-control" id="oldLength" readOnly="true" /><br />
-				   				Length<br /><form:input type="text" class="form-control" path="length" id="length" /> <br /><br />
-				   				
-								
-							
-							
+				   				<br />
+				   				<c:forEach var="paramMast" items="${lstAllQualityParameter}" varStatus="idx">
+				   					<form:hidden path="lstObjQualityTestQualityParamDetails[${idx.index}].qtyParamCode" value="${paramMast.qtyParamCode}"/>
+					   				<div class="col-lg-4">
+					                    <div class="panel panel-info">
+					                        <div class="panel-heading">
+					                            ${paramMast.qtyParamName}
+					                        </div>
+					                        <div class="panel-body">
+						                        <div class="form-group">
+				                                    <form:input class="form-control" path="lstObjQualityTestQualityParamDetails[${idx.index}].qtpmQualityParamMinValue" placeholder="Enter Min Value."/>
+				                                </div>
+					                            <div class="form-group">
+				                                    <form:input class="form-control" path="lstObjQualityTestQualityParamDetails[${idx.index}].qtpmQualityParamMaxValue" placeholder="Enter Max Value."/>
+				                                </div>
+					                        </div>
+					                    </div>
+					                </div>
+				                </c:forEach>
+				   				<div class="form-group">
+				   					<label>Control Number</label>
+                                    <form:input path="controlNo" class="form-control" id="controlNo" placeholder="Enter control number."/>
+                                </div>
+                                <div class="form-group">
+				   					<label>Heat Number</label>
+                                    <form:input path="heatNo" class="form-control" id="heatNo" placeholder="Enter heat number."/>
+                                </div>
                         </div>
                         <div class="panel-footer">
                             <button type="submit" class="btn btn-success"> Update </button>
@@ -410,6 +453,7 @@
        		</div>
     	</div>
  	</div>
+ 
  
 
 
@@ -438,27 +482,22 @@
 	<script type="text/javascript" src="./resources/theme/default/js/WebCodeCam.js"></script>
     
     <script type="text/javascript">
+
+    function formSubmit() {
+    	document.getElementById("barCode").disabled=false;
+		return true;
+	}
+ 	
 	
 		function getBarcodeData() {
 			if(document.getElementById("barCode").value=="") {
 				alert("Please enter barcode");
 				return false;
 			}
-			document.scanBarcode.submit();
+			document.qualityTest.submit();
 			
 		}
-		function setBarcode() {
-			//alert(document.getElementById("barCode"));
-			if(document.getElementById("scanned-QR").innerHTML=="") {
-				alert("Please scan barcode.");
-				return false;
-			}
-			document.getElementById("barCode").value=document.getElementById("scanned-QR").innerHTML;
-			//alert("true");
-			document.scanBarcode.submit();
-			
-		}
-		
+
 		function checkBarcode() {
 			
 			if(document.getElementById("barCode").value=="") { // && document.getElementById("scanned-QR").innerHTML=="") {
@@ -471,6 +510,21 @@
 			}
 			document.scanBarcode.action="./updateLengthForBarCode";
 			return true;
+		}
+
+		if(document.getElementById("barCode").value!="") {
+			document.getElementById("barCode").disabled=true;
+			document.getElementById("btnGetBarcode").disabled=true;
+		}
+
+		function getSubType() {
+			document.getElementById("barCode").disabled=false;
+			document.qualityTest.submit();
+		}
+
+		function getParameter() {
+			document.getElementById("barCode").disabled=false;
+			document.qualityTest.submit();
 		}
 	</script>
 </html>

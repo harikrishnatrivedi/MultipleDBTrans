@@ -388,7 +388,7 @@
                                         
                             
 								<div class="form-group has-error">
-									<label class="control-label" for="inputError"><form:errors path="barCode" /></label>
+									<label class="control-label" for="inputError"><form:errors path="commonError" /></label>
 								</div>
 									Barcode<br />
 				   					<form:input path="barCode" class="form-control" id="barCode" /> <br/>

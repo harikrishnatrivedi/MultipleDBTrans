@@ -4,6 +4,7 @@
 package org.qrbarcode.model.barcode;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -51,9 +52,11 @@ public class QualityTypeMaster{
 	@Column(name = "QTY_TYPE_LAST_UPDATED_DATE", nullable = true)
 	private Date qtyTypeLastUpdatedDate;
 	
-	@OneToMany(mappedBy="QUALITY_TEST")
-	private Set<QualityTest> lstObjQualityTest;
+	@OneToMany(mappedBy="objQtyTypeMaster")
+	private List<QualityTest> lstObjQualityTest;
 	
+	@OneToMany(mappedBy="objQualityTypeMaster")
+	private List<QualitySubTypeMaster> lstObjQualitySubTypeMaster;
 	
 	
 	/**
@@ -185,7 +188,7 @@ public class QualityTypeMaster{
 	/**
 	 * @return the lstObjQualityTest
 	 */
-	public Set<QualityTest> getLstObjQualityTest() {
+	public List<QualityTest> getLstObjQualityTest() {
 		return lstObjQualityTest;
 	}
 
@@ -194,7 +197,7 @@ public class QualityTypeMaster{
 	/**
 	 * @param lstObjQualityTest the lstObjQualityTest to set
 	 */
-	public void setLstObjQualityTest(Set<QualityTest> lstObjQualityTest) {
+	public void setLstObjQualityTest(List<QualityTest> lstObjQualityTest) {
 		this.lstObjQualityTest = lstObjQualityTest;
 	}
 

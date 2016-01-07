@@ -17,13 +17,13 @@ import org.qrbarcode.model.barcode.QualityTypeMaster;
  *
  */ 
 @Repository("qyalityTypeMaster")
-public class QualityTypeMasterDaoImpl 
+public class QualityTypeMasterDAOImpl 
 	extends GenericDAOImpl<QualityTypeMaster, Integer> 
-	implements QualityTypeMasterDao {
+	implements QualityTypeMasterDAO {
  
     public QualityTypeMaster findByQltyTypeMstCode(String qltyTypeMstCode) {
-    	Criteria criteria = createEntityCriteria(currentPrimarySession());
-        criteria.add(Restrictions.eq("qltyTypeMstCode", qltyTypeMstCode));
+    	Criteria criteria = currentPrimarySession().createCriteria(QualityTypeMaster.class);
+        criteria.add(Restrictions.eq("qtyTypeCode", qltyTypeMstCode));
         System.out.println("Before error");
         //System.out.println("criteria.uniqueResult() :::: "+criteria.uniqueResult());
         return (QualityTypeMaster) criteria.uniqueResult();
@@ -42,7 +42,9 @@ public class QualityTypeMasterDaoImpl
 
     @SuppressWarnings("unchecked")
     public List<QualityTypeMaster> findAllQualityTypeMaster() {
-        Criteria criteria = createEntityCriteria(currentPrimarySession());
-        return (List<QualityTypeMaster>) criteria.list();
+    	System.out.println("QualityTypeMasterListDAOImpl");
+        //Criteria criteria = createEntityCriteria(currentPrimarySession());
+        //currentPrimarySession().createCriteria(QualityTypeMaster.class).list();
+        return currentPrimarySession().createCriteria(QualityTypeMaster.class).list();
     }
 }

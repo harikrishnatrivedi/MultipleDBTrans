@@ -5,6 +5,7 @@ package org.qrbarcode.dao;
 
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.qrbarcode.model.barcode.QualitySubTypeMaster;
@@ -17,13 +18,13 @@ import org.springframework.stereotype.Repository;
  *
  */ 
 @Repository("qualitySubTypeMaster")
-public class QualitySubTypeMasterDaoImpl 
+public class QualitySubTypeMasterDAOImpl 
 	extends GenericDAOImpl<QualitySubTypeMaster, Integer>
-	implements QualitySubTypeMasterDao {
+	implements QualitySubTypeMasterDAO {
  
     public QualitySubTypeMaster findByQltySubTypeMasterCode(String qltySubTypeMasterCode) {
-    	Criteria criteria = createEntityCriteria(currentPrimarySession());
-        criteria.add(Restrictions.eq("qltySubTypeMasterCode", qltySubTypeMasterCode));
+    	Criteria criteria = currentPrimarySession().createCriteria(QualitySubTypeMaster.class);
+        criteria.add(Restrictions.eq("qtySubTypeCode", qltySubTypeMasterCode));
         System.out.println("Before error");
         return (QualitySubTypeMaster) criteria.uniqueResult();
     }
@@ -44,9 +45,10 @@ public class QualitySubTypeMasterDaoImpl
         return (List<QualitySubTypeMaster>) criteria.list();
     }
     
+    @SuppressWarnings("unchecked")
     public List<QualitySubTypeMaster> findAllQualitySubTypeMasterByTypeCode(String paramStrTypeCode) {
-        Criteria criteria = createEntityCriteria(currentPrimarySession());
-        criteria.add(Restrictions.eq("qtyTypeCode", paramStrTypeCode));
+        Criteria criteria = currentPrimarySession().createCriteria(QualitySubTypeMaster.class).setFetchMode("objQualityTypeMaster", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("objQualityTypeMaster.qtyTypeCode", paramStrTypeCode));
         return (List<QualitySubTypeMaster>) criteria.list();
     }
     

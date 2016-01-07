@@ -3,7 +3,7 @@
  */
 package org.qrbarcode.model.barcode;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,12 +36,8 @@ public class QualityParameterMaster {
 	@Column(name = "QTY_PARAM_NAME", nullable = false)
 	private String qtyParamName;
 
-	@Size(max = 15)
-	@Column(name = "QTY_TYPE_CODE", nullable = true)
-	private String qtyTypeCode;
-
 	@ManyToOne
-	@JoinColumn(name="QTY_TYPE_CODE")
+	@JoinColumn(name="QTY_TYPE_CODE", referencedColumnName="QTY_TYPE_CODE")
 	private QualityTypeMaster objQtyTypeMaster;
 
 	@Size(max = 50)
@@ -49,15 +45,15 @@ public class QualityParameterMaster {
 	private String qtyTypeName;
 
 	@ManyToOne
-	@JoinColumn(name="QTY_SUB_TYPE_CODE")
+	@JoinColumn(name="QTY_SUB_TYPE_CODE", referencedColumnName="QTY_SUB_TYPE_CODE")
 	private QualitySubTypeMaster objQtySubTypeMaster;
 
 	@Size(max = 50)
 	@Column(name = "QTY_SUB_TYPE_NAME", nullable = true)
 	private String qtySubTypeName;
 
-	@OneToMany(mappedBy="QUALITY_TEST_QUALITY_PARAM_DETAILS")
-	private Set<QualityParameterDetails> lstObjQualityTestQualityParamDetails;
+	@OneToMany(mappedBy="objQualityParameterMst")
+	private List<QualityParameterDetails> lstObjQualityTestQualityParamDetails;
 	
 	/**
 	 * @return the slNo
@@ -113,106 +109,91 @@ public class QualityParameterMaster {
 
 
 
-	/**
-	 * @return the qtyTypeCode
-	 */
-	public String getQtyTypeCode() {
-		return qtyTypeCode;
-	}
+	
 
-
-
-	/**
-	 * @param qtyTypeCode the qtyTypeCode to set
-	 */
-	public void setQtyTypeCode(String qtyTypeCode) {
-		this.qtyTypeCode = qtyTypeCode;
-	}
-
-
-
-	/**
+/*
+	*//**
 	 * @return the objQtyTypeMaster
-	 */
+	 *//*
 	public QualityTypeMaster getObjQtyTypeMaster() {
 		return objQtyTypeMaster;
 	}
 
 
 
-	/**
+	*//**
 	 * @param objQtyTypeMaster the objQtyTypeMaster to set
-	 */
+	 *//*
 	public void setObjQtyTypeMaster(QualityTypeMaster objQtyTypeMaster) {
 		this.objQtyTypeMaster = objQtyTypeMaster;
 	}
 
 
 
-	/**
+	*//**
 	 * @return the qtyTypeName
-	 */
+	 *//*
 	public String getQtyTypeName() {
 		return qtyTypeName;
 	}
 
 
 
-	/**
+	*//**
 	 * @param qtyTypeName the qtyTypeName to set
-	 */
+	 *//*
 	public void setQtyTypeName(String qtyTypeName) {
 		this.qtyTypeName = qtyTypeName;
 	}
 
 
 
-	/**
+	*//**
 	 * @return the objQtySubTypeMaster
-	 */
+	 *//*
 	public QualitySubTypeMaster getObjQtySubTypeMaster() {
 		return objQtySubTypeMaster;
 	}
 
 
 
-	/**
+	*//**
 	 * @param objQtySubTypeMaster the objQtySubTypeMaster to set
-	 */
+	 *//*
 	public void setObjQtySubTypeMaster(QualitySubTypeMaster objQtySubTypeMaster) {
 		this.objQtySubTypeMaster = objQtySubTypeMaster;
 	}
 
 
 
-	/**
+	*//**
 	 * @return the qtySubTypeName
-	 */
+	 *//*
 	public String getQtySubTypeName() {
 		return qtySubTypeName;
 	}
 
 
 
-	/**
+	*//**
 	 * @param qtySubTypeName the qtySubTypeName to set
-	 */
+	 *//*
 	public void setQtySubTypeName(String qtySubTypeName) {
 		this.qtySubTypeName = qtySubTypeName;
 	}
 
-
+*/
 
 	@Override
 	public String toString() {
-		return "barCodeCutting [slNo=" + slNo +
+		return "qualityParameterMaster [slNo=" + slNo +
 				", qtyParamCode=" + qtyParamCode +
 				", qtyParamName=" + qtyParamName +
-				", qtyTypeCode=" + qtyTypeCode +
-				", objQtyTypeMaster=" + objQtyTypeMaster +
+//				", qtyTypeCode=" + qtyTypeCode +
+	/*			", objQtyTypeMaster=" + objQtyTypeMaster +
 				", qtyTypeName=" + qtyTypeName +
 				", objQtySubTypeMaster=" + objQtySubTypeMaster +
-				", qtySubTypeName=" + qtySubTypeName +
+				", qtySubTypeName=" + qtySubTypeName +*/
 				"]";
 	}
 }

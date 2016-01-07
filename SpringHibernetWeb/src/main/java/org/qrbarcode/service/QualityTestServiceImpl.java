@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 
-@Service("qualityTestService")
+@Service//("qualityTestService")
 @Transactional
 public class QualityTestServiceImpl implements QualityTestService {
  
@@ -49,4 +49,9 @@ public class QualityTestServiceImpl implements QualityTestService {
     public List<QualityTest> findAllQualityTest() {
         return dao.findAllQualityTest();
     }
+    
+    public QualityTest findQutalityTestByqltyBarcode(String paramStrBarcode){
+    	return dao.findQutalityTestByqltyBarcode(paramStrBarcode);
+    }
+    
 }

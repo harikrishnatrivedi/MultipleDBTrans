@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 
@@ -31,6 +32,10 @@ public class POBarcode {
     @Column(name = "S_NO", nullable = false)
 	private Integer sNo;
 
+	@Transient
+	@Size(max = 1500)
+	private String commonError;
+	
 	@Size(max = 50)
 	@Column(name = "MrnNo", nullable = true)
 	private String mrnNo;

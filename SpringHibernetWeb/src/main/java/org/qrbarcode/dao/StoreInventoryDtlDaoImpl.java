@@ -17,9 +17,9 @@ import org.qrbarcode.model.barcode.StoreInventoryDtl;
  *
  */ 
 @Repository("storeInventoryDtlDao")
-public class StoreInventoryDtlDaoImpl 
+public class StoreInventoryDtlDAOImpl 
 	extends GenericDAOImpl<StoreInventoryDtl, Integer> 
-	implements StoreInventoryDtlDao {
+	implements StoreInventoryDtlDAO {
  
     public StoreInventoryDtl findByBarCode(String barCode) {
     	Criteria criteria = createEntityCriteria(currentPrimarySession());
